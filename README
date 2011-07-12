@@ -1,14 +1,13 @@
-Notes:
-
-
-use python -m SimpleHTTPServer to test in Chrome
-
-
 
 TODO
 Add a CSS framework.. blueprint or 960?
-Add simple control buttons using backbone and jquery
-Convert to vertical bars
+create margins for labels
+add legend
+move bars to correct offsets
+add colors(red, green)
 
+Notes:
+
+use python -m SimpleHTTPServer to test in Chrome
 
 

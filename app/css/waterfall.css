@@ -1,0 +1,26 @@
+
+.blue {
+  stroke: white;
+  fill: steelblue;
+}
+.rule {
+  font: 10px sans-serif;
+  fill: #aaa;
+}
+
+.label {
+  font: 20px sans-serif;
+  fill: red;
+}
+
+
+.highlight {
+  fill: steelblue;
+  stroke: #00008B;
+  stroke-width: 2.2;
+}
+
+.clicked {
+  fill: red;
+}
+
