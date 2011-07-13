@@ -1,16 +1,35 @@
+# calculate max and min for values + 10%?
+# calculate each y
+# if d then y is the previous top
+# if -d then y is the previous top - height(d)
+# 
+
+# for each value, x, y, height, width
+# 
+
+
 jQuery -> 
-  data = [1,3,5,13,25,40]
+
+  data =    [80, -20,  -5, 13,  25, -6]
+  tops =    [80,  80,  60, 73,  98, 98]
+  bottoms = [ 0,  60,  55, 60,  73, 93]
+
+  sum = 0
+  tops = data.map((e,i) ->
+    sum += e
+  ).slice(1,this.length)
+
+  tops = [80, 80,  65,78 , 103, 103]
   h = 400
   w = 640
-  margin = 15
 
   y = d3.scale.linear()
-    .domain([0, d3.max(data)])
-    .range(["0px", "640px"])
+    .domain([0, 125])
+    .range(["0px", "400px"])
 
   yy = d3.scale.linear()
-    .domain([0, d3.max(data)])
-    .rangeRound([0, h - margin])
+    .domain([0, 125])
+    .rangeRound([0, h])
 
   x = d3.scale.ordinal()
     .domain(data)
@@ -35,9 +54,9 @@ jQuery ->
     .data(data)
     .enter().append("svg:rect")
     .attr("x", (d,i) -> i * (w/data.length))
-    .attr("y", (d,i) -> h - yy(d))
+    .attr("y", (d,i) -> h-yy(tops[i]))
     .attr("width", x.rangeBand())
-    .attr("height", y)
+    .attr("height", (d) -> y(Math.abs(d)))
     .attr("class", "blue")
     .attr("rx", 3)
     .attr("ry", 3)
@@ -82,4 +101,4 @@ jQuery ->
     $(@).attr("class","blue")
     $('#control').html("ML X: " + x + " Y: " + y)
 
-
+  $('#control').html("D: " + data + " O: " + tops + " Y: " + (h - yy(tops[3])) + " H: " + (y(data[3])))
