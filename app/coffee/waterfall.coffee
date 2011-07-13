@@ -10,16 +10,12 @@
 
 jQuery -> 
 
-  data =    [80, -20,  -5, 13,  25, -6]
-  tops =    [80,  80,  60, 73,  98, 98]
-  bottoms = [ 0,  60,  55, 60,  73, 93]
+  data =    [80, 20,  -5, 13, -5, -6]
+  lastValue = d3.sum(data)
+  data.push(lastValue)
 
-  sum = 0
-  tops = data.map((e,i) ->
-    sum += e
-  ).slice(1,this.length)
+  offsets = ycords( 125, data) 
 
-  tops = [80, 80,  65,78 , 103, 103]
   h = 400
   w = 640
 
@@ -54,7 +50,7 @@ jQuery ->
     .data(data)
     .enter().append("svg:rect")
     .attr("x", (d,i) -> i * (w/data.length))
-    .attr("y", (d,i) -> h-yy(tops[i]))
+    .attr("y", (d,i) -> yy(offsets[i]))
     .attr("width", x.rangeBand())
     .attr("height", (d) -> y(Math.abs(d)))
     .attr("class", "blue")
@@ -101,4 +97,4 @@ jQuery ->
     $(@).attr("class","blue")
     $('#control').html("ML X: " + x + " Y: " + y)
 
-  $('#control').html("D: " + data + " O: " + tops + " Y: " + (h - yy(tops[3])) + " H: " + (y(data[3])))
+  $('#control').html("D: " + data + " O: " + offsets) 
