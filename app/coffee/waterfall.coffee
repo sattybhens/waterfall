@@ -1,41 +1,45 @@
-# calculate max and min for values + 10%?
-# calculate each y
-# if d then y is the previous top
-# if -d then y is the previous top - height(d)
-# 
-
-# for each value, x, y, height, width
-# 
-
-
 jQuery -> 
 
+  # dimensions
+  domainStart = 0
+  domainEnd = 125
+  domainRange = domainEnd - domainStart
+
+  margin = 40
+  h = 400 - margin
+  hpx = h + "px"
+  w = 640 - margin
+
+  # data inputs
   data =    [80, 20,  -5, 13, -5, -6]
+
+  # calculated
   lastValue = d3.sum(data)
   data.push(lastValue)
+ 
+  console.log("domainRange", domainRange)
 
-  offsets = ycords( 125, data) 
-
-  h = 400
-  w = 640
+  offsets = ycords( domainEnd, data) 
 
   y = d3.scale.linear()
-    .domain([0, 125])
-    .range(["0px", "400px"])
+    .domain([domainStart, domainEnd])
+    .range(["0px", hpx])
 
   yy = d3.scale.linear()
-    .domain([0, 125])
+    .domain([domainStart, domainEnd])
     .rangeRound([0, h])
 
   x = d3.scale.ordinal()
     .domain(data)
-    .rangeBands([0, w], 0.1)
+    .rangeBands([0, w])
 
-  chart = d3.select("body")
+  chart = d3.select("#waterfall")
     .append("svg:svg")
-    .attr("class", "chart")
-    .attr("width", w)
-    .attr("height", h)
+      .attr("width", w)
+      .attr("height", h)
+    .append("svg:g")
+      .attr("transform", "translate(20, 20)")
+
   
   chart.selectAll("line")
     .data(y.ticks(7))
@@ -49,13 +53,13 @@ jQuery ->
   chart.selectAll("rect")
     .data(data)
     .enter().append("svg:rect")
-    .attr("x", (d,i) -> i * (w/data.length))
+    .attr("x", (d,i) -> i * (w/data.length)+2)
     .attr("y", (d,i) -> yy(offsets[i]))
     .attr("width", x.rangeBand())
     .attr("height", (d) -> y(Math.abs(d)))
     .attr("class", "blue")
-    .attr("rx", 3)
-    .attr("ry", 3)
+    .attr("rx", 2)
+    .attr("ry", 2)
 
   chart.selectAll("text")
     .data(data)
@@ -85,16 +89,9 @@ jQuery ->
 
   $('rect').click (e) -> 
     $(@).attr("class","clicked")
-    $('#control').html("MC X: " + x + " Y: " + y)
 
   $('rect').mouseenter (e) -> 
     $(@).attr("class","highlight")
-    x = e.pageX - @offsetLeft
-    y = e.pageY - @offsetTop
-    $('#control').html(" ME X: " + x + " Y: " + y)
 
   $('rect').mouseleave (e) -> 
     $(@).attr("class","blue")
-    $('#control').html("ML X: " + x + " Y: " + y)
-
-  $('#control').html("D: " + data + " O: " + offsets) 
